@@ -1,0 +1,23 @@
+{
+  "name": "sandwichlegend",
+  "owner": {
+    "name": "Liam",
+    "url": "https://github.com/sandwichlegend"
+  },
+  "description": "A personal curated fork of Matt Pocock's skills for real engineering.",
+  "plugins": [
+    {
+      "name": "sandwichlegend-skills",
+      "source": "./",
+      "description": "Curated, flat-layout fork of Matt Pocock's engineering skills \u2014 no tagging.",
+      "category": "engineering",
+      "keywords": [
+        "engineering",
+        "skills",
+        "tdd",
+        "code-review",
+        "grilling"
+      ]
+    }
+  ]
+}
