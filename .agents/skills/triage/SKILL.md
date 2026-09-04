@@ -18,8 +18,8 @@ Every comment or issue posted to the issue tracker during triage **must** start 
 
 ## Reference docs
 
-- [AGENT-BRIEF.md](AGENT-BRIEF.md) — how to write durable agent briefs
-- [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md) — how the `.out-of-scope/` knowledge base works
+- [AGENT-BRIEF.md](AGENT-BRIEF.md): how to write durable agent briefs
+- [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md): how the `.out-of-scope/` knowledge base works
 
 ## Tracker conventions
 
@@ -27,10 +27,10 @@ Do not create, apply, remove, or depend on tracker labels. All accepted implemen
 
 Use issue titles only to identify exceptional work:
 
-- `Research: <question>` — independent investigation
-- `Decision: <question>` — a decision reserved for a live human conversation
-- `Prototype: <question>` — a concrete artifact for human evaluation
-- `<implementation>` — no prefix; ordinary agent-executed work
+- `Research: <question>`: independent investigation
+- `Decision: <question>`: a decision reserved for a live human conversation
+- `Prototype: <question>`: a concrete artifact for human evaluation
+- `<implementation>`: no prefix; ordinary agent-executed work
 
 Use these prefixes exactly. Do not use bracketed tags. Lifecycle, dependencies, parentage, and claims live in the tracker's native status, blocking, parent, and assignee fields.
 
@@ -49,9 +49,9 @@ The maintainer invokes `/triage` and describes what they want in natural languag
 
 List the tracker's open issues and inspect their bodies and discussion. Present three buckets, oldest first:
 
-1. **Unreviewed** — no AI triage comment or agent brief.
-2. **Waiting for information** — the latest triage notes ask unresolved questions; surface items where the reporter has replied since those notes.
-3. **Prepared** — an agent brief exists and no unresolved question blocks execution.
+1. **Unreviewed**: no AI triage comment or agent brief.
+2. **Waiting for information**: the latest triage notes ask unresolved questions; surface items where the reporter has replied since those notes.
+3. **Prepared**: an agent brief exists and no unresolved question blocks execution.
 
 When PRs are in scope, include only external PRs in discovery and identify each result as a PR or issue in prose. An explicitly named PR is always eligible for triage regardless of author.
 
@@ -65,15 +65,15 @@ Show counts and a one-line summary per item. Let the maintainer pick.
 
 3. **Verify the claim.** For a bug, reproduce it from the reporter's steps. For a PR, check that the diff does what it claims and run the relevant checks. Report confirmed, failed, or insufficient detail.
 
-4. **Grill if needed.** If the request needs clarification, run `/grilling` and `/domain-modeling` one question at a time. Update `CONTEXT.md` or ADRs as decisions land.
+4. **Grill if needed.** If the request needs clarification, call the Skill tool twice, for "grilling" and "domain-modeling", and grill it into shape a round of questions at a time. Update `CONTEXT.md` or ADRs as decisions land.
 
 5. **Apply the approved outcome:**
-   - **Implementation** — keep an ordinary unprefixed title and post an agent brief.
-   - **Research**, **human decision**, or **prototype** — apply the corresponding natural-language title prefix and post a brief describing the expected outcome.
-   - **Request information** — post triage notes using the template below and leave the issue open.
-   - **Already implemented** — point to the implementation and close. Do not write to `.out-of-scope/`.
-   - **Reject a bug** — explain politely and close.
-   - **Reject an enhancement** — write to `.out-of-scope/`, link it from a comment, and close.
+   - **Implementation**: keep an ordinary unprefixed title and post an agent brief.
+   - **Research**, **human decision**, or **prototype**: apply the corresponding natural-language title prefix and post a brief describing the expected outcome.
+   - **Request information**: post triage notes using the template below and leave the issue open.
+   - **Already implemented**: point to the implementation and close. Do not write to `.out-of-scope/`.
+   - **Reject a bug**: explain politely and close.
+   - **Reject an enhancement**: write to `.out-of-scope/`, link it from a comment, and close.
 
 Never add a readiness marker. An accepted implementation issue with an agent brief is ready by construction.
 

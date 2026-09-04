@@ -5,9 +5,10 @@ A personal fork of [mattpocock/skills](https://github.com/mattpocock/skills), re
 ## What's different from upstream
 
 - **Flat layout.** Skills live directly in [`.agents/skills/<name>/`](./.agents/skills) instead of `skills/<category>/<name>/`. [`.claude/skills/`](./.claude/skills) holds symlinks into them so Claude Code picks them up in-repo.
-- **Curated set.** 22 skills, dropping upstream's in-progress, misc, and a few I don't use (`wizard`, `to-questionnaire`, `wait-what`, etc.). `writing-for-agents` is kept as `writing-great-skills`.
-- **No tagging.** The issue-tracker label/triage-tagging setup (`triage-labels.md`) is removed; `/setup-matt-pocock-skills` no longer asks about labels.
-- **Publishing cruft removed.** No changesets, release workflow, npm package, or Claude Code plugin manifest — this fork is consumed via the `skills` CLI.
+- **Curated set.** 22 skills, dropping upstream's in-progress, misc, and a few I don't use (`wizard`, `to-questionnaire`, `wait-what`, etc.). `writing-for-agents` replaces the older `writing-great-skills`.
+- **No tagging.** The issue-tracker label/triage-tagging setup (`triage-labels.md`) is removed; `/setup-matt-pocock-skills` no longer asks about labels. Exceptional work is marked by title prefix (`Research:`, `Decision:`, `Prototype:`) instead.
+- **Linear tracker.** A Linear issue-tracker template is included. Specs land as Linear **project milestones**, not as issues; `/to-tickets` attaches tickets to the milestone.
+- **Publishing cruft removed.** No changesets, release workflow, or npm package. A minimal plugin manifest remains so the installer can offer a grouped "select all"; otherwise this fork is consumed via the `skills` CLI.
 
 ## Install into a project
 
@@ -27,7 +28,7 @@ Then run `/setup-matt-pocock-skills` once per repo to wire up the issue tracker 
 
 ## Skills
 
-`ask-matt` · `code-review` · `codebase-design` · `diagnosing-bugs` · `domain-modeling` · `grill-me` · `grill-with-docs` · `grilling` · `handoff` · `implement` · `improve-codebase-architecture` · `prototype` · `research` · `resolving-merge-conflicts` · `setup-matt-pocock-skills` · `tdd` · `teach` · `to-spec` · `to-tickets` · `triage` · `wayfinder` · `writing-great-skills`
+`ask-matt` · `code-review` · `codebase-design` · `diagnosing-bugs` · `domain-modeling` · `grill-me` · `grill-with-docs` · `grilling` · `handoff` · `implement` · `improve-codebase-architecture` · `prototype` · `research` · `resolving-merge-conflicts` · `setup-matt-pocock-skills` · `tdd` · `teach` · `to-spec` · `to-tickets` · `triage` · `wayfinder` · `writing-for-agents`
 
 ---
 
