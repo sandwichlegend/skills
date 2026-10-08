@@ -51,6 +51,16 @@
         "./skills/productivity/wait-what",
         "./skills/productivity/writing-for-agents"
       ]
+    },
+    {
+      "name": "GTM",
+      "source": "./",
+      "strict": false,
+      "description": "Go-to-market workflows: partner overlap imports and Salesforce data.",
+      "category": "gtm",
+      "skills": [
+        "./skills/gtm/partner-overlaps"
+      ]
     }
   ]
 }
