@@ -1,6 +1,11 @@
-// Run with: node --test .agents/skills/babysit/scripts/foreman-state.test.mjs
+// Run with: node --test skills/ci/babysit/scripts/foreman-state.test.mjs
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { chmodSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { fingerprint, foldState, parseMarkers } from "./foreman-state.mjs";
 
@@ -190,4 +195,37 @@ test("an unresolved thread someone else started keeps the bar unmet until it is 
   assert.equal(resolved.barMet, true);
   assert.deepEqual(resolved.unresolved, []);
   assert.notEqual(fingerprint({ state: "open", ...open }), fingerprint({ state: "open", ...resolved }));
+});
+
+test("a wait whose reads keep failing still times out", async () => {
+  // A fake `gh` that answers the first read (five calls) and fails every call after it.
+  const dir = mkdtempSync(join(tmpdir(), "foreman-state-"));
+  const fake = join(dir, "gh");
+  writeFileSync(
+    fake,
+    `#!/usr/bin/env node
+const fs = require("node:fs");
+const counter = ${JSON.stringify(join(dir, "calls"))};
+const calls = fs.existsSync(counter) ? Number(fs.readFileSync(counter, "utf8")) + 1 : 1;
+fs.writeFileSync(counter, String(calls));
+if (calls > 5) { console.error("HTTP 502"); process.exit(1); }
+const args = process.argv.slice(2);
+if (args.includes("graphql")) console.log(JSON.stringify([{ data: { repository: { pullRequest: { reviewThreads: { nodes: [] } } } } }]));
+else if (args.includes("--paginate")) console.log("[[]]");
+else console.log(JSON.stringify({ state: "open", merged: false, head: { sha: ${JSON.stringify(HEAD)} } }));
+`,
+  );
+  chmodSync(fake, 0o755);
+  const script = fileURLToPath(new URL("./foreman-state.mjs", import.meta.url));
+  const stdout = await new Promise((resolve, reject) =>
+    execFile(
+      process.execPath,
+      [script, "o/r", "1", "--wait", "--interval", "0.05", "--timeout", "0.005"],
+      { env: { ...process.env, PATH: `${dir}:${process.env.PATH}` }, timeout: 10_000 },
+      (error, out) => (error ? reject(error) : resolve(out)),
+    ),
+  );
+  const result = JSON.parse(stdout);
+  assert.equal(result.timedOut, true);
+  assert.match(result.readError, /gh/);
 });

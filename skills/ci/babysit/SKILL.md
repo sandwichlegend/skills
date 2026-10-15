@@ -16,13 +16,13 @@ Arguments, all optional:
 
 ## Reading state
 
-All state comes from the reviewer's hidden markers, never from its prose:
+All state comes from the reviewer's hidden markers, never from its prose, through the script bundled with this skill. `<skill-dir>` below is the directory this `SKILL.md` was loaded from (Claude Code shows it as the skill's base directory), wherever the skill is installed:
 
 ```bash
-node .agents/skills/babysit/scripts/foreman-state.mjs <owner/repo> <number> --bar <severity>
+node <skill-dir>/scripts/foreman-state.mjs <owner/repo> <number> --bar <severity>
 ```
 
-It prints JSON: `reviewer` (the App's login, e.g. `agnet-foreman[bot]`; null before its first review), `passPending` (the reviewer has not yet reviewed the current head), `barMet`, `impasse` (held findings above low, or any held finding with `--bar low`, and open findings at or above the bar that three passes running left open after your fixes), `toHandle` (open finding ids), every finding with its severity, status, `failedFixAttempts`, `commentId` (null when it lives only in the review body), path, line, title, and thread replies, and `unresolved`: each unresolved review thread someone other than the reviewer started, with its `commentId`, author, path, line, an excerpt, and its replies. If the script is missing in this repo, read it from the Foreman repo's `.agents/skills/babysit/scripts/`.
+It prints JSON: `reviewer` (the App's login, e.g. `agnet-foreman[bot]`; null before its first review), `passPending` (the reviewer has not yet reviewed the current head), `barMet`, `impasse` (held findings above low, or any held finding with `--bar low`, and open findings at or above the bar that three passes running left open after your fixes), `toHandle` (open finding ids), every finding with its severity, status, `failedFixAttempts`, `commentId` (null when it lives only in the review body), path, line, title, and thread replies, and `unresolved`: each unresolved review thread someone other than the reviewer started, with its `commentId`, author, path, line, an excerpt, and its replies.
 
 Only the reviewer changes a finding's status. Never edit, resolve, or delete its comments.
 
@@ -54,13 +54,20 @@ Done with a round when every open finding at or above the bar was fixed or marke
 
 ## Waiting
 
-Wait with the harness **Monitor** tool, never a timed loop of your own. Arm it on the state script in `--wait` mode, which prints nothing until the reviewer does something (a new review, a status change, a reply in a finding's thread), an unresolved thread opens or is resolved, or the PR closes, then prints the new state as one line and exits:
+Wait on the state script in `--wait` mode, never a timed loop of your own. It prints nothing until the reviewer does something (a new review, a status change, a reply in a finding's thread), an unresolved thread opens or is resolved, or the PR closes, then prints the new state as one line and exits. It polls on its own and always exits by `--timeout` minutes:
 
 ```bash
-node .agents/skills/babysit/scripts/foreman-state.mjs <owner/repo> <number> --bar <severity> --wait --timeout 30
+node <skill-dir>/scripts/foreman-state.mjs <owner/repo> <number> --bar <severity> --wait --timeout 30
 ```
 
-When it fires, start the round again from step 1; if it was not what you were waiting for, arm it again. If it reports `timedOut`, the reviewer has not answered in 30 minutes: report that and stop.
+Run it so that its exit wakes you:
+
+- **Claude Code**: the Bash tool with `run_in_background: true` and a `timeout` above 30 minutes (e.g. `2400000`); you are re-invoked when it exits. Read its output then.
+- **Any other harness**: run it as a foreground command with a command timeout above `--timeout`.
+
+If the harness caps a command below 30 minutes, lower `--timeout` to fit and re-arm on `timedOut` until 30 minutes have passed since your push.
+
+When it exits, start the round again from step 1; if it was not what you were waiting for, arm it again. If it reports `timedOut`, the reviewer has not answered in 30 minutes: report that and stop. A `timedOut` with `readError` means `gh` kept failing: report the error instead.
 
 ## Report
 

@@ -9,8 +9,9 @@
 //
 // With --wait it prints nothing until something the reviewer controls changes
 // (a new review, a finding's status, a reviewer reply in a finding's thread),
-// an unresolved thread opens or closes, or the PR closes, then prints the new state and exits. Run it under the
-// harness Monitor to wait for the reviewer.
+// an unresolved thread opens or closes, or the PR closes, then prints the new state and exits.
+// Past --timeout it prints { timedOut: true, ... } and exits, even while reads keep failing
+// (then with `readError` in place of the state).
 //
 // Needs the GitHub CLI (`gh`) signed in with read access to the repo.
 
@@ -268,8 +269,13 @@ if (process.argv[1] !== undefined && realpathSync(process.argv[1]) === fileURLTo
       let now;
       try {
         now = read();
-      } catch {
-        continue; // One failed read must not end the wait.
+      } catch (error) {
+        // One failed read must not end the wait, but failing reads must not outlast it.
+        if (Date.now() > deadline) {
+          console.log(JSON.stringify({ timedOut: true, readError: String(error?.message ?? error) }));
+          break;
+        }
+        continue;
       }
       if (fingerprint(now) !== before) {
         console.log(JSON.stringify(now));
