@@ -1,5 +1,5 @@
 interface:
   display_name: "Foreman init"
-  short_description: "Write foreman.md and check the reviewer is watching"
+  short_description: "Write foreman.md and check GitHub App access"
 policy:
   allow_implicit_invocation: false

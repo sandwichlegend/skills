@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Foreman init
 
-Run from a clone of a **target repo**. Writes the repo's **Foreman file** (`foreman.md` at the repo root), which tells the Foreman reviewer how to prepare and check the repo in its sandbox, then reports whether the reviewer is watching the repo. Never commits or pushes: the developer reviews and commits the file.
+Run from a clone of a **target repo**. Writes the repo's **Foreman file** (`foreman.md` at the repo root), which tells the Foreman reviewer how to prepare and check the repo in its sandbox, then reports the evidence for GitHub App access and reviewer activity. Never commits or pushes: the developer reviews and commits the file.
 
 ## 1. Read the repo
 
@@ -50,7 +50,7 @@ forbidden:
   - pnpm build
   - pnpm run build
   - npx convex deploy
-linear_project: Rolodex
+linear_project: Example project
 ---
 
 Reviewer guidance in markdown.
@@ -61,24 +61,24 @@ Reviewer guidance in markdown.
 
 If `foreman.md` already exists, do not overwrite it: show the developer a diff of what you would change and write only what they accept.
 
-Done when `foreman.md` exists at the repo root in exactly this format and every command in it appears in `package.json` scripts or the agent docs.
+Done when `foreman.md` exists at the repo root in exactly this format. Derive install commands from the package manager and lockfile. Derive script commands from existing scripts or agent docs, using workspace filters where needed. Do not invent script names or package names.
 
-## 5. Check the reviewer is watching
+## 5. Check GitHub App access
 
-The reviewer runs as the GitHub App `agnet-foreman`. Print its install link, `https://github.com/apps/agnet-foreman/installations/new`. Use `gh api "repos/<owner>/<repo>" --jq .owner.type` to identify the owner type. For an organization, check with the GitHub CLI:
+The reviewer runs as the GitHub App `bold-foreman`. Print its install link, `https://github.com/apps/bold-foreman/installations/new`. Use `gh api "repos/<owner>/<repo>" --jq .owner.type` to identify the owner type. For an organization, check with the GitHub CLI:
 
 ```bash
-gh api "orgs/<owner>/installations" --jq '.installations[] | select(.app_slug == "agnet-foreman") | {id, app_slug, repository_selection}'
+gh api --paginate "orgs/<owner>/installations" --jq '.installations[] | select(.app_slug == "bold-foreman") | {id, app_slug, repository_selection}'
 ```
 
 - A successful query with no result: the App is not installed in the org.
 - A failed query: installation access is **unverified**. Report the error, not a missing installation.
 - `repository_selection` is `all`: the App can see this repo.
-- `selected`: list `gh api "user/installations/<id>/repositories" --paginate --jq '.repositories[].full_name'` and look for `<owner>/<repo>`. A failed listing leaves repo access unverified.
+- `selected`: repo access is unverified until the developer confirms this repo is selected at `https://github.com/organizations/<owner>/settings/installations/<id>`. The `user/installations` API requires a compatible token and does not work with the usual `gh` OAuth token.
 
-For a personal owner, skip the organization endpoint. Ask the developer to verify repo access through the App installation settings and report it as unverified until confirmed.
+For a personal owner, skip the organization endpoint. Ask the developer to verify repo access at `https://github.com/settings/installations` and report it as unverified until confirmed.
 
-The App seeing the repo is necessary but not sufficient: the reviewer also ignores any repo missing from its `FOREMAN_REPOS` allowlist on the `foreman-agent` Vercel project, which you cannot check from here. Report it as a step for the developer.
+The App seeing the repo is necessary but not sufficient: the reviewer also ignores any repo missing from its `FOREMAN_REPOS` allowlist on the `foreman-agent` Vercel project, which you cannot check from here. App access alone does not establish reviewer activity.
 
 ## 6. Report
 
