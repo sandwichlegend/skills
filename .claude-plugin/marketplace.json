@@ -66,10 +66,11 @@
       "name": "CI",
       "source": "./",
       "strict": false,
-      "description": "Pull-request automation: driving a PR through the Foreman reviewer.",
+      "description": "Pull-request automation: configure Foreman and drive a PR through its reviewer.",
       "category": "ci",
       "skills": [
-        "./skills/ci/babysit"
+        "./skills/ci/babysit",
+        "./skills/ci/foreman-init"
       ]
     }
   ]
