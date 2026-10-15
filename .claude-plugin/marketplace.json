@@ -61,6 +61,16 @@
       "skills": [
         "./skills/gtm/partner-overlaps"
       ]
+    },
+    {
+      "name": "CI",
+      "source": "./",
+      "strict": false,
+      "description": "Pull-request automation: driving a PR through the Foreman reviewer.",
+      "category": "ci",
+      "skills": [
+        "./skills/ci/babysit"
+      ]
     }
   ]
 }
