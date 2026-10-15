@@ -4,7 +4,7 @@ A personal fork of [mattpocock/skills](https://github.com/mattpocock/skills) (gi
 
 ## Layout
 
-Three buckets ship: `skills/engineering/` (code work), `skills/productivity/` (non-code workflow) and `skills/gtm/` (go-to-market; fork-only, no upstream counterpart). Upstream's other buckets, `docs/`, changesets, release workflow and package manifests stay out.
+Four buckets ship: `skills/engineering/` (code work), `skills/productivity/` (non-code workflow), `skills/gtm/` (go-to-market) and `skills/ci/` (pull-request automation). `gtm` and `ci` are fork-only, with no upstream counterpart. Upstream's other buckets, `docs/`, changesets, release workflow and package manifests stay out.
 
 Adding, moving or removing a skill touches four registrations:
 

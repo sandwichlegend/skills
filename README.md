@@ -4,7 +4,7 @@ A personal fork of [mattpocock/skills](https://github.com/mattpocock/skills), tr
 
 ## What's different from upstream
 
-- **Curated set.** Only the `engineering` and `productivity` buckets ship from upstream, plus a fork-only `gtm` bucket. Upstream's `in-progress`, `misc`, and `deprecated` buckets are left out. `resolving-merge-conflicts` stays even though upstream dropped it.
+- **Curated set.** Only the `engineering` and `productivity` buckets ship from upstream, plus fork-only `gtm` and `ci` buckets. Upstream's `in-progress`, `misc`, and `deprecated` buckets are left out. `resolving-merge-conflicts` stays even though upstream dropped it.
 - **No tagging.** The issue-tracker label setup (`triage-labels.md`) is removed, and `/setup-matt-pocock-skills` no longer asks about labels. Exceptional work is marked by title prefix (`Research:`, `Decision:`, `Prototype:`) instead.
 - **Linear tracker.** A Linear issue-tracker template is included. Specs land as Linear **project milestones**, not issues; `/to-tickets` attaches tickets to the milestone.
 - **Publishing cruft removed.** No changesets, release workflow, docs site, or npm package. `.claude-plugin/marketplace.json` declares one plugin per bucket so the installer groups skills by category.
@@ -19,7 +19,7 @@ From the target repo:
 npx skills@latest add sandwichlegend/skills
 ```
 
-The picker groups skills under **Engineering**, **Productivity** and **GTM**; toggling a group selects the whole bucket. To take everything non-interactively:
+The picker groups skills under **Engineering**, **Productivity**, **GTM** and **CI**; toggling a group selects the whole bucket. To take everything non-interactively:
 
 ```bash
 npx skills@latest add sandwichlegend/skills --skill '*' --agent claude-code -y
@@ -34,6 +34,8 @@ Then run `/setup-matt-pocock-skills` once per repo to wire up the issue tracker 
 **[Productivity](./skills/productivity/README.md)**: [`grill-me`](./skills/productivity/grill-me/SKILL.md) · [`grilling`](./skills/productivity/grilling/SKILL.md) · [`handoff`](./skills/productivity/handoff/SKILL.md) · [`teach`](./skills/productivity/teach/SKILL.md) · [`to-questionnaire`](./skills/productivity/to-questionnaire/SKILL.md) · [`wait-what`](./skills/productivity/wait-what/SKILL.md) · [`writing-for-agents`](./skills/productivity/writing-for-agents/SKILL.md)
 
 **[GTM](./skills/gtm/README.md)**: [`partner-overlaps`](./skills/gtm/partner-overlaps/SKILL.md)
+
+**[CI](./skills/ci/README.md)**: [`babysit`](./skills/ci/babysit/SKILL.md)
 
 ---
 
