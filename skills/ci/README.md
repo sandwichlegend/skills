@@ -14,8 +14,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 Both skills originate in [bold-gtm/foreman](https://github.com/bold-gtm/foreman). When updating `foreman-init`, merge upstream changes and preserve these local changes:
 
 - Codex requires explicit invocation, matching Claude Code.
-- The installed App is `bold-foreman`. Verify its identity against GitHub before changing the lookup or install link.
-- Personal owners and selected repositories use installation settings. Failed API calls leave access unverified.
+- The installed App is `bold-foreman`, private to `bold-gtm`. Stop before writing configuration for other owners. Verify its identity and distribution before changing this restriction.
+- Selected repositories use organization installation settings. Failed API calls leave access unverified.
 - App access and reviewer activity are separate claims. The allowlist still needs confirmation.
 - Install commands and workspace script invocations may be derived from repository configuration rather than copied verbatim from scripts.
 

@@ -10,7 +10,11 @@ Run from a clone of a **target repo**. Writes the repo's **Foreman file** (`fore
 
 ## 1. Read the repo
 
-Find the repo with `gh repo view --json nameWithOwner,defaultBranchRef`. Then read, where present:
+Find the repo with `gh repo view --json nameWithOwner,defaultBranchRef`.
+
+The deployed `bold-foreman` App is private and owned by `bold-gtm`. [Private Apps can only be installed on their owner's account](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private). If the repo owner is not `bold-gtm`, stop before writing `foreman.md`. Report that this reviewer cannot review the repo. Do not suggest installing this App there. Supporting other owners requires the App owner to change its distribution or provide a separate deployment.
+
+For a `bold-gtm` repo, read, where present:
 
 - agent docs: `AGENTS.md`, `CLAUDE.md`, `docs/agents/*.md`;
 - the issue-tracker doc (usually `docs/agents/issue-tracker.md`): it names the Linear project;
@@ -28,6 +32,7 @@ The reviewer runs `setup` in order, then each `checks` command, inside a sandbox
 - **checks**: the scripts that judge a change without secrets: tests, typecheck, lint. Use the form the docs use (`pnpm test`, `pnpm typecheck`). In a workspace, run a member package's script from the root with the package manager's filter (`pnpm --filter console typecheck`, `npm run typecheck -w console`). Leave out anything that needs a database, an API key, or a deploy.
 - **forbidden**: the build (`pnpm build` and `pnpm run build`, or the package manager's equivalent), every deploy or migration command you find in scripts or docs (`npx convex deploy`, `vercel --prod`, `prisma migrate deploy`, and so on), and anything the docs say must not run in CI. The reviewer refuses these.
 - **linear_project**: the Linear project from the issue-tracker doc, exactly as named there. Omit the key when the repo tracks no Linear project.
+- Derive install commands from the package manager and lockfile. Derive script commands from existing scripts or agent docs, using workspace filters where needed. Do not invent script names or package names.
 
 Ask the developer one question before writing: **may the reviewer run the build?** Default no. If yes, move the build command from `forbidden` into `checks`.
 
@@ -61,11 +66,11 @@ Reviewer guidance in markdown.
 
 If `foreman.md` already exists, do not overwrite it: show the developer a diff of what you would change and write only what they accept.
 
-Done when `foreman.md` exists at the repo root in exactly this format. Derive install commands from the package manager and lockfile. Derive script commands from existing scripts or agent docs, using workspace filters where needed. Do not invent script names or package names.
+Done when `foreman.md` exists at the repo root in exactly this format.
 
 ## 5. Check GitHub App access
 
-The reviewer runs as the GitHub App `bold-foreman`. Print its install link, `https://github.com/apps/bold-foreman/installations/new`. Use `gh api "repos/<owner>/<repo>" --jq .owner.type` to identify the owner type. For an organization, check with the GitHub CLI:
+The reviewer runs as the GitHub App `bold-foreman`. Print its install link, `https://github.com/apps/bold-foreman/installations/new`. For the supported `bold-gtm` owner, check with the GitHub CLI:
 
 ```bash
 gh api --paginate "orgs/<owner>/installations" --jq '.installations[] | select(.app_slug == "bold-foreman") | {id, app_slug, repository_selection}'
@@ -76,8 +81,6 @@ gh api --paginate "orgs/<owner>/installations" --jq '.installations[] | select(.
 - `repository_selection` is `all`: the App can see this repo.
 - `selected`: repo access is unverified until the developer confirms this repo is selected at `https://github.com/organizations/<owner>/settings/installations/<id>`. The `user/installations` API requires a compatible token and does not work with the usual `gh` OAuth token.
 
-For a personal owner, skip the organization endpoint. Ask the developer to verify repo access at `https://github.com/settings/installations` and report it as unverified until confirmed.
-
 The App seeing the repo is necessary but not sufficient: the reviewer also ignores any repo missing from its `FOREMAN_REPOS` allowlist on the `foreman-agent` Vercel project, which you cannot check from here. App access alone does not establish reviewer activity.
 
 ## 6. Report
@@ -86,4 +89,4 @@ Tell the developer, briefly:
 
 - the path written (or the diff proposed) and the commands it declares;
 - App access confirmed, missing, or unverified, with the evidence. Report reviewer activity as unverified until the allowlist is confirmed or a Foreman review is observed;
-- next steps: review and commit `foreman.md`; install the App if it is missing; add `<owner>/<repo>` to `FOREMAN_REPOS` if it is new.
+- next steps: review and commit `foreman.md`; ask a `bold-gtm` administrator to install the App if it is missing; add `<owner>/<repo>` to `FOREMAN_REPOS` if it is new.
