@@ -35,7 +35,7 @@ Then run `/setup-matt-pocock-skills` once per repo to wire up the issue tracker 
 
 **[GTM](./skills/gtm/README.md)**: [`partner-overlaps`](./skills/gtm/partner-overlaps/SKILL.md)
 
-**[CI](./skills/ci/README.md)**: [`babysit`](./skills/ci/babysit/SKILL.md)
+**[CI](./skills/ci/README.md)**: [`babysit`](./skills/ci/babysit/SKILL.md) · [`foreman-init`](./skills/ci/foreman-init/SKILL.md)
 
 ---
 

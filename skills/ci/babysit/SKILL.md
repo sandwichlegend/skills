@@ -22,7 +22,7 @@ All state comes from the reviewer's hidden markers, never from its prose, throug
 node <skill-dir>/scripts/foreman-state.mjs <owner/repo> <number> --bar <severity>
 ```
 
-It prints JSON: `reviewer` (the App's login, e.g. `agnet-foreman[bot]`; null before its first review), `passPending` (the reviewer has not yet reviewed the current head), `barMet`, `impasse` (held findings above low, or any held finding with `--bar low`, and open findings at or above the bar that three passes running left open after your fixes), `toHandle` (open finding ids), every finding with its severity, status, `failedFixAttempts`, `commentId` (null when it lives only in the review body), path, line, title, and thread replies, and `unresolved`: each unresolved review thread someone other than the reviewer started, with its `commentId`, author, path, line, an excerpt, and its replies.
+It prints JSON: `reviewer` (the App's login, e.g. `bold-foreman[bot]`; null before its first review), `passPending` (the reviewer has not yet reviewed the current head), `barMet`, `impasse` (held findings above low, or any held finding with `--bar low`, and open findings at or above the bar that three passes running left open after your fixes), `toHandle` (open finding ids), every finding with its severity, status, `failedFixAttempts`, `commentId` (null when it lives only in the review body), path, line, title, and thread replies, and `unresolved`: each unresolved review thread someone other than the reviewer started, with its `commentId`, author, path, line, an excerpt, and its replies.
 
 Only the reviewer changes a finding's status. Never edit, resolve, or delete its comments.
 
